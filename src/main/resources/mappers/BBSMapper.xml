@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="BBSMapper">
+	<select id="list" resultType="com.example.domain.BBSVO">
+		select * from tblbbs where
+		<if test="key=='title'">
+			title like concat('%', #{word} , '%') 
+		</if>
+		<if test="key=='content'">
+		    content  like concat('%', #{word} , '%')
+		</if>
+		
+		<!--IF문 안에 TITLE과 CONTENT만 각각 빼주고 공통되는 문장은 밑에 빼주면 됨
+			like concat('%', #{word} , '%') -->
+		
+		order by id desc 
+		limit #{start}, 10
+	</select>
+	<select id="total" resultType="int">
+		select count(*) from tblbbs 
+		<if test="key=='title'">
+			where title  like concat('%', #{word} , '%')
+		</if>
+		<if test="key=='content'">
+		    where content  like concat('%', #{word} , '%')
+		</if>		
+		
+	</select>	
+</mapper>
